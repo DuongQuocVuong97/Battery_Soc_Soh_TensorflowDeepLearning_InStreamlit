@@ -430,7 +430,7 @@ sess = tf.compat.v1.InteractiveSession()
 sess.run(init)
 run_mode = st.selectbox('모델 수행 모드', ('default', 'train'))
 
-if run_mode == 'default':
+if run_mode == 'train':
     train_start = st.checkbox('train start')
     training_progress_epochs = st.progress(0)
     for_one_time_epoch = 1 / epochs
@@ -546,7 +546,7 @@ if run_mode == 'default':
         plt.savefig('Initial_A.png')
         st.pyplot(fig)
 
-if run_mode == 'test':
+if run_mode == 'default':
     test_start = st.checkbox('test start')
     if test_start :
         from PIL import Image
