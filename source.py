@@ -609,7 +609,7 @@ if run_mode == 'train':
         plt.legend(['Test Data'])
         plt.savefig('Initial_A.png')
         st.pyplot(fig)
-        drive_upload
+        drive_upload()
 
 if run_mode == 'default':
     test_start = st.checkbox('start')
@@ -624,7 +624,7 @@ if run_mode == 'default':
         image = Image.open('Initial_A.png')
         image = image.resize((900, 400))
         st.image(image, use_column_width='never')
-        drive_upload
+        drive_upload()
 
 
 
