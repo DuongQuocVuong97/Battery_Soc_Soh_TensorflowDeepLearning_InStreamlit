@@ -546,8 +546,8 @@ if run_mode == 'train':
         plt.savefig('Initial_A.png')
         st.pyplot(fig)
 
-if run_mode == 'test':
-    test_start = st.checkbox('test start')
+if run_mode == 'default':
+    test_start = st.checkbox('start')
     if test_start :
         from PIL import Image
         st.subheader('Initial Model - Training and Test Data Predictions')
