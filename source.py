@@ -407,6 +407,70 @@ learning_rate = st.number_input('The optimization initial learning rate', value=
 error = tf.reduce_mean(tf.math.squared_difference(y, output_pred))
 optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate, name='Adam-op').minimize(error)
 
+def drive_upload():
+    drive = st.checkbox('drive upload')
+    if drive:
+        # 구글 드라이브 업로드
+        #from __future__ import print_function
+        import pickle
+        import os.path
+        from googleapiclient.discovery import build
+        from google_auth_oauthlib.flow import InstalledAppFlow
+        from google.auth.transport.requests import Request
+
+        # 권한 인증 및 토큰 확인
+        SCOPES = ['https://www.googleapis.com/auth/drive']
+        creds = None
+
+        # 이미 발급받은 Token이 있을 때
+        if os.path.exists('token.pickle'):
+           with open('token.pickle', 'rb') as token:
+               creds = pickle.load(token)
+
+        # 발급받은 토큰이 없거나 AccessToken이 만료되었을 때
+        if not creds or not creds.valid:
+           if creds and creds.expired and creds.refresh_token:
+               creds.refresh(Request())
+           else:
+               flow = InstalledAppFlow.from_client_secrets_file('client_secret_249516912610-gc1lof7d9vlvj96sh0f9362ggsevbqac.apps.googleusercontent.com.json', SCOPES)
+               creds = flow.run_local_server(port=0)
+           # 현재 토큰 정보를 저장
+           with open('token.pickle', 'wb') as token:
+               pickle.dump(creds, token)
+
+        # 연결 인스턴스 생성
+        service = build('drive', 'v3', credentials=creds)
+
+        #폴더에 파일 업데이트(사진 2개)
+        from googleapiclient.http import MediaFileUpload
+        file_id = '1EJqatYOMFARi7rDbHdVuhRaiHAtA1vsV'
+        folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
+
+        file_metadata = {
+            'name': 'Initial_T.png',
+            'parents': [folder_id]
+        }
+        media = MediaFileUpload('Initial_T.png',
+                                mimetype='image/png',
+                                resumable=True)
+        # Retrieve the existing parents to remove
+        # Move the file to the new folder
+        file = service.files().update(fileId=file_id, media_body=media).execute()
+        print("File ID :",file.get('id'))
+
+        file_id = '1H5GjFMVyF46k6sx4xRtxPKcrX93DeuUA'
+        folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
+
+        file_metadata = {
+            'name': 'Initial_A.png',
+            'parents': [folder_id]
+        }
+        media = MediaFileUpload('Initial_A.png',
+                                mimetype='image/png',
+                                resumable=True)
+
+        file = service.files().update(fileId=file_id, media_body=media).execute()
+        print("File ID :",file.get('id'))
 
 def randomize(x, y):
     """ Randomizes the order of data samples and their corresponding labels"""
@@ -545,6 +609,7 @@ if run_mode == 'train':
         plt.legend(['Test Data'])
         plt.savefig('Initial_A.png')
         st.pyplot(fig)
+        drive_upload
 
 if run_mode == 'default':
     test_start = st.checkbox('start')
@@ -559,71 +624,10 @@ if run_mode == 'default':
         image = Image.open('Initial_A.png')
         image = image.resize((900, 400))
         st.image(image, use_column_width='never')
+        drive_upload
 
 
-drive = st.checkbox('drive upload')
-if drive:
-    # 구글 드라이브 업로드
-    #from __future__ import print_function
-    import pickle
-    import os.path
-    from googleapiclient.discovery import build
-    from google_auth_oauthlib.flow import InstalledAppFlow
-    from google.auth.transport.requests import Request
 
-    # 권한 인증 및 토큰 확인
-    SCOPES = ['https://www.googleapis.com/auth/drive']
-    creds = None
-
-    # 이미 발급받은 Token이 있을 때
-    if os.path.exists('token.pickle'):
-       with open('token.pickle', 'rb') as token:
-           creds = pickle.load(token)
-
-    # 발급받은 토큰이 없거나 AccessToken이 만료되었을 때
-    if not creds or not creds.valid:
-       if creds and creds.expired and creds.refresh_token:
-           creds.refresh(Request())
-       else:
-           flow = InstalledAppFlow.from_client_secrets_file('client_secret_249516912610-gc1lof7d9vlvj96sh0f9362ggsevbqac.apps.googleusercontent.com.json', SCOPES)
-           creds = flow.run_local_server(port=0)
-       # 현재 토큰 정보를 저장
-       with open('token.pickle', 'wb') as token:
-           pickle.dump(creds, token)
-
-    # 연결 인스턴스 생성
-    service = build('drive', 'v3', credentials=creds)
-
-    #폴더에 파일 업데이트(사진 2개)
-    from googleapiclient.http import MediaFileUpload
-    file_id = '1EJqatYOMFARi7rDbHdVuhRaiHAtA1vsV'
-    folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
-
-    file_metadata = {
-        'name': 'Initial_T.png',
-        'parents': [folder_id]
-    }
-    media = MediaFileUpload('Initial_T.png',
-                            mimetype='image/png',
-                            resumable=True)
-    # Retrieve the existing parents to remove
-    # Move the file to the new folder
-    file = service.files().update(fileId=file_id, media_body=media).execute()
-    print("File ID :",file.get('id'))
-
-    file_id = '1H5GjFMVyF46k6sx4xRtxPKcrX93DeuUA'
-    folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
-
-    file_metadata = {
-        'name': 'Initial_A.png',
-        'parents': [folder_id]
-    }
-    media = MediaFileUpload('Initial_A.png',
-                            mimetype='image/png',
-                            resumable=True)
-
-    file = service.files().update(fileId=file_id, media_body=media).execute()
-    print("File ID :",file.get('id'))
 
 # st.header('Tracking Battery Degradation')
 
