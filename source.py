@@ -430,7 +430,7 @@ sess = tf.compat.v1.InteractiveSession()
 sess.run(init)
 run_mode = st.selectbox('모델 수행 모드', ('default', 'train'))
 
-if run_mode == 'train':
+if run_mode == 'default':
     train_start = st.checkbox('train start')
     training_progress_epochs = st.progress(0)
     for_one_time_epoch = 1 / epochs
