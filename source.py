@@ -57,8 +57,8 @@ if use_tf_eager:
   except:
     reset_session()
     
-import tensorflow_probability as tfp
-tfd = tfp.distributions
+# import tensorflow_probability as tfp
+# tfd = tfp.distributions
 
 def default_session_options(enable_gpu_ram_resizing=True,
                             enable_xla=False):
