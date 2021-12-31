@@ -433,7 +433,7 @@ def drive_upload():
                creds.refresh(Request())
            else:
                flow = InstalledAppFlow.from_client_secrets_file('client_secret_249516912610-gc1lof7d9vlvj96sh0f9362ggsevbqac.apps.googleusercontent.com.json', SCOPES)
-               creds = flow.run_local_server(port=0)
+               creds = flow.run_local_server(host='15.164.231.40' port=0)
            # 현재 토큰 정보를 저장
            with open('token.pickle', 'wb') as token:
                pickle.dump(creds, token)
