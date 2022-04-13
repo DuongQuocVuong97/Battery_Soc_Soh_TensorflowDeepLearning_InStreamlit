@@ -646,8 +646,8 @@ if run_mode == 'default':
 
         #폴더에 파일 업데이트(사진 2개)
         from googleapiclient.http import MediaFileUpload
-        file_id = '1EJqatYOMFARi7rDbHdVuhRaiHAtA1vsV'
-        folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
+        file_id = '1KPGArGvgx3jNan18fLNXK4oSnSjUIEXZ'
+        folder_id = '1ZDbRTVFCDZSD074Cd41sH79IZdHg6sh7'
 
         file_metadata = {
             'name': 'Initial_T.png',
@@ -661,8 +661,8 @@ if run_mode == 'default':
         file = service.files().update(fileId=file_id, media_body=media).execute()
         print("File ID :",file.get('id'))
 
-        file_id = '1H5GjFMVyF46k6sx4xRtxPKcrX93DeuUA'
-        folder_id = '194Ie0Hg6CXqsQOWXzMyIbqIdIv6XyV0f'
+        file_id = '1LFzN_kzzJrehSZdS7qqjIT2f_6iE00fI'
+        folder_id = '1ZDbRTVFCDZSD074Cd41sH79IZdHg6sh7'
 
         file_metadata = {
             'name': 'Initial_A.png',
